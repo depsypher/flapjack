@@ -34,12 +34,12 @@ Flapjack doesn't mandate any particular setup per-se, but what follows is likely
 
 Then:
 
-`$ git clone https://github.com/depsypher/flapjack` (and import as existing project in Eclipse)
-`$ cd flapjack`    
+`$ git clone https://github.com/depsypher/flapjack` (and import as existing project in Eclipse)  
+`$ cd flapjack`  
 `$ ./extras/setup.sh`
 
 Then:
 
 1. Right-click flapjack.launch in Eclipse and choose Run or Debug
-2. Go here for the app: http://localhost:8080/flapjack/
-3. Go here for metrics: http://localhost:8080/flapjack/admin/metrics?pretty=true
+2. Go here for the app: [http://localhost:8080/flapjack/](http://localhost:8080/flapjack/)
+3. Go here for metrics: [http://localhost:8080/flapjack/admin/metrics?pretty=true](http://localhost:8080/flapjack/admin/metrics?pretty=true)
