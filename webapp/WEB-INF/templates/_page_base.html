@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<title>${app.name}</title>
+	<link rel="stylesheet" type="text/css" href="css/site.css" />
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" />
+	<link href='http://fonts.googleapis.com/css?family=Rancho' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<header class="navbar">
+		<div class="navbar-inner">
+			<a class="brand" href="${app.root}">${app.name}</a>
+			<div id="loginInfo" data-email="${user.person.email}" data-sessiontimeout="${app.sessionTimeout}">
+				<div a:if="user.person.email != null">
+					<a href="account">Account</a>
+					<a href="#" id="logout">Sign out</a>
+				</div>
+				<div a:else id="login" class="clickable persona-button orange">
+					<span>Sign in</span>
+				</div>
+			</div>
+			<div a:if="app.sessionTimeout" id="sessionTimeout">
+				Your session has timed out, please sign in.
+			</div>
+		</div>
+	</header>
+	<div id="content">
+	</div>
+	<footer>
+		<p>&copy; ${utils:formatYear(app.time)} ${app.name}</p>
+	</footer>
+	<form a:if="user.accountRequiresSetup()" a:overrides="#extraContent"
+			id="accountDialog" class="modal hide fade" tabindex="-1" role="dialog"
+			aria-labelledby="accountDialogLabel" aria-hidden="true"
+			data-backdrop="false" data-keyboard="false">
+		<div class="modal-header">
+			<h3 id="accountDialogLabel">Welcome to ${app.name}</h3>
+			<h4>Let&#8217;s start by getting your new account set up :-)</h4>
+		</div>
+		<div class="modal-body">
+			<label for="accountName">Name:</label><input id="accountName" type="text" name="name" />
+		</div>
+		<div class="modal-footer">
+			<button type="button" id="accountDialogAbort" class="btn">Abort!</button>
+			<button id="accountDialogSubmit" class="btn btn-primary">Okay</button>
+		</div>
+	</form>
+	<a:div id="extraContent"></a:div>
+	<script a:if="user.accountRequiresSetup()" type="text/javascript">
+		window.onload = function() {
+			var accountDialog = $("#accountDialog");
+			accountDialog.modal({ show: true });
+			accountDialog.submit(function(e) {
+				e.preventDefault();
+				$.ajax({
+					type: "POST",
+					url: "account/setup",
+					data: accountDialog.serialize(),
+					success: function(res, status, xhr) {
+						if (res.status === "success") {
+							accountDialog.modal("hide");
+							document.location.reload(true);
+						} else {
+							alert(res.errorMessage);
+						}
+						return true;
+					},
+					error: function(res, status, xhr) {
+						return alert("login failure" + res);
+					}
+				});
+				return false;
+			});
+			$("#accountDialogAbort").click(function(e) {
+				$.ajax({
+					type: "POST",
+					url: "auth/logout",
+					success: function(res, status, xhr) {
+						navigator.id.logout();
+						location.href = "";
+					},
+					error: function(res, status, xhr) {
+						return alert("login failure" + res);
+					}
+				});
+			});
+		};
+	</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+	<script src="https://login.persona.org/include.js"></script>
+	<script src="js/site.js"></script>
+	<script id="extraScript"></script>
+</body>
+</html>
