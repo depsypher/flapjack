@@ -32,7 +32,7 @@ footer {
 	background-color: #fe9;
 	padding: 15px 20px;
 	min-height: 500px;
-	color: darkslategrey;
+	color: #444;
 }
 #accountDialog.modal {
 	width: 480px;

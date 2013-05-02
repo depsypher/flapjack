@@ -1,5 +1,7 @@
 <!--$extends _page_base.html-->
 
+<script a:overrides="#requireJsScript" data-main="js/main" data-start="app/account" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.5/require.min.js"></script>
+
 <div id="content">
 	<div a:if="user.isLoggedIn()">
 		<strong>Update your account information:</strong>
@@ -8,30 +10,5 @@
 			<input id="name" type="text" name="name" value="${user.person.name}" /><br />
 			<button id="accountFormSubmit" class="btn btn-primary">Update</button>
 		</form>
-		<script type="text/javascript">
-			window.onload = function() {
-				var accountForm = $("#accountForm");
-				accountForm.submit(function(e) {
-					e.preventDefault();
-					$.ajax({
-						type: "POST",
-						url: "account/setup",
-						data: accountForm.serialize(),
-						success: function(res, status, xhr) {
-							if (res.status === "success") {
-								document.location.reload(true);
-							} else {
-								alert(res.errorMessage);
-							}
-							return true;
-						},
-						error: function(res, status, xhr) {
-							return alert("login failure" + res);
-						}
-					});
-					return false;
-				});
-			};
-		</script>
 	</div>
 </div>

@@ -48,4 +48,11 @@ public class HomeController {
 		}
 		return new Viewable("/home.html", model);
 	}
+
+	@GET @Path("/metrics")
+	@Produces(MediaType.TEXT_HTML) @Timed
+	public Viewable metrics(@Context HttpServletRequest request) {
+		Map<String, String> model = new HashMap<String, String>();
+		return new Viewable("/metrics.html", model);
+	}
 }

@@ -4,9 +4,13 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	<title>${app.name}</title>
-	<link rel="stylesheet" type="text/css" href="css/site.css" />
-	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" />
-	<link href='http://fonts.googleapis.com/css?family=Rancho' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Rancho'>
+	<link rel="stylesheet" href="css/site.css" />
+	<a:span id="extraStyle"></a:span>
+	<a:span id="requireJsScript">
+	<script data-main="js/main" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.5/require.min.js"></script>
+	</a:span>
 </head>
 <body>
 	<header class="navbar">
@@ -31,9 +35,8 @@
 	<footer>
 		<p>&copy; ${utils:formatYear(app.time)} ${app.name}</p>
 	</footer>
-	<form a:if="user.accountRequiresSetup()" a:overrides="#extraContent"
-			id="accountDialog" class="modal hide fade" tabindex="-1" role="dialog"
-			aria-labelledby="accountDialogLabel" aria-hidden="true"
+	<form a:if="user.accountRequiresSetup()" id="accountDialog" class="modal hide fade"
+			tabindex="-1" role="dialog" aria-labelledby="accountDialogLabel" aria-hidden="true"
 			data-backdrop="false" data-keyboard="false">
 		<div class="modal-header">
 			<h3 id="accountDialogLabel">Welcome to ${app.name}</h3>
@@ -47,51 +50,7 @@
 			<button id="accountDialogSubmit" class="btn btn-primary">Okay</button>
 		</div>
 	</form>
-	<a:div id="extraContent"></a:div>
-	<script a:if="user.accountRequiresSetup()" type="text/javascript">
-		window.onload = function() {
-			var accountDialog = $("#accountDialog");
-			accountDialog.modal({ show: true });
-			accountDialog.submit(function(e) {
-				e.preventDefault();
-				$.ajax({
-					type: "POST",
-					url: "account/setup",
-					data: accountDialog.serialize(),
-					success: function(res, status, xhr) {
-						if (res.status === "success") {
-							accountDialog.modal("hide");
-							document.location.reload(true);
-						} else {
-							alert(res.errorMessage);
-						}
-						return true;
-					},
-					error: function(res, status, xhr) {
-						return alert("login failure" + res);
-					}
-				});
-				return false;
-			});
-			$("#accountDialogAbort").click(function(e) {
-				$.ajax({
-					type: "POST",
-					url: "auth/logout",
-					success: function(res, status, xhr) {
-						navigator.id.logout();
-						location.href = "";
-					},
-					error: function(res, status, xhr) {
-						return alert("login failure" + res);
-					}
-				});
-			});
-		};
-	</script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-	<script src="https://login.persona.org/include.js"></script>
-	<script src="js/site.js"></script>
-	<script id="extraScript"></script>
+	<a:span id="extraContent"></a:span>
+	<a:span id="extraScript"></a:span>
 </body>
 </html>
