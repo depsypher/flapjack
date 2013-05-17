@@ -2,7 +2,7 @@
 A tasty java stack for building modern web applications.
 
 ## What is Flapjack?
-Flapjack is a java webapp that comes with functionality virtually any site is going to need.  
+Flapjack is a java webapp that comes with functionality virtually any site is going to need.<br/>
 Use it as a starting point for building your own web applications.
 
 ## Why use Flapjack?
@@ -22,7 +22,7 @@ The functionality that you get out of the box from Flapjack includes:
 * User account creation, login, and session management.
 * Integration with [Mozilla Persona](http://www.mozilla.org/en-US/persona/) for login.
 * Database caching.
-* Cool server metrics.
+* Cool server metrics using [Metrics Watcher](https://github.com/benbertola/metrics-watcher).
 * And much more!
 
 ## How do I get up and running?
@@ -34,8 +34,8 @@ Flapjack doesn't mandate any particular setup per-se, but what follows is likely
 
 Then:
 
-`$ git clone https://github.com/depsypher/flapjack` (and import as existing project in Eclipse)  
-`$ cd flapjack`  
+`$ git clone https://github.com/depsypher/flapjack` (and import as existing project in Eclipse)<br/>
+`$ cd flapjack`<br/>
 `$ ./extras/setup.sh`
 
 Then:

@@ -36,6 +36,9 @@ public class Person implements Serializable {
 	@Column(nullable=false)
 	private String email;
 
+	@Column(nullable=false)
+	private boolean admin;
+
 	public Person() {
 	}
 
@@ -57,6 +60,13 @@ public class Person implements Serializable {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	@Override
@@ -81,6 +91,7 @@ public class Person implements Serializable {
 		return Objects.toStringHelper(this)
 				.add("email", email)
 				.add("name", name)
+				.add("admin", admin)
 				.toString();
 	}
 }
