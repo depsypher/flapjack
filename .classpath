@@ -53,6 +53,28 @@
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/slf4j-log4j12-1.7.1.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/usertype.core-3.1.0.CR1.jar"/>
 	<classpathentry kind="lib" path="webapp/WEB-INF/lib/usertype.spi-3.1.0.CR1.jar"/>
-	<classpathentry kind="lib" path="extras/servlet-api-3.0.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jboss-logging-3.1.0.GA.jar"/>
+	<classpathentry kind="lib" path="webapp/WEB-INF/lib/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-annotations-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-client-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-continuation-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-deploy-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-http-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-io-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-jaas-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-jmx-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-jndi-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/monitor/jetty-monitor-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-plus-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-proxy-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-rewrite-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-security-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-server-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-servlet-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-servlets-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-util-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-webapp-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/jetty-xml-9.0.3.v20130506.jar"/>
+	<classpathentry kind="lib" path="extras/jetty-distribution-9.0.3.v20130506/lib/servlet-api-3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

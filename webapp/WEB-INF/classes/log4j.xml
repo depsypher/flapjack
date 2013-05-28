@@ -26,17 +26,21 @@
 	</appender>
 -->
 
+	<logger name="org.eclipse.jetty">
+		<level value="warn" />
+	</logger>
+
 	<logger name="net.sf.ehcache">
-		<level value="warn"/>
+		<level value="warn" />
 	</logger>
 
 	<logger name="org.hibernate">
-		<level value="warn"/>
+		<level value="warn" />
 	</logger>
 
 	<root>
 		<level value="debug" />
-		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="STDOUT" />
 <!--
 		<appender-ref ref="asyncAppender" />
 -->
