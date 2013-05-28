@@ -30,16 +30,17 @@ Flapjack doesn't mandate any particular setup per-se, but what follows is likely
 
 1. Put JDK7 or better on your machine
 2. Install [Postgress.app](http://postgresapp.com/)
-3. Install Eclipse, and the [Run Jetty Run](https://code.google.com/p/run-jetty-run/) plugin
+3. Install Eclipse
 
 Then:
 
-`$ git clone https://github.com/depsypher/flapjack` (and import as existing project in Eclipse)<br/>
+`$ git clone https://github.com/depsypher/flapjack`<br/>
 `$ cd flapjack`<br/>
 `$ ./extras/setup.sh`
 
 Then:
 
-1. Right-click flapjack.launch in Eclipse and choose Run or Debug
-2. Go here for the app: [http://localhost:8080/flapjack/](http://localhost:8080/flapjack/)
-3. Go here for metrics: [http://localhost:8080/flapjack/admin/metrics?pretty=true](http://localhost:8080/flapjack/admin/metrics?pretty=true)
+1. File > Import > Existing Project in Eclipse
+2. Right-click Jetty.launch in Eclipse and choose Run or Debug
+3. Go here for the app: [http://localhost:8080/flapjack/](http://localhost:8080/flapjack/)
+4. Go here for metrics: [http://localhost:8080/flapjack/metrics](http://localhost:8080/flapjack/metrics)
