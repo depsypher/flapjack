@@ -41,6 +41,6 @@ Then:
 Then:
 
 1. File > Import > Existing Project in Eclipse
-2. Right-click Jetty.launch in Eclipse and choose Run or Debug
+2. Right-click FlapjackRunner.launch in Eclipse and choose Run or Debug
 3. Go here for the app: [http://localhost:8080/flapjack/](http://localhost:8080/flapjack/)
 4. Go here for metrics: [http://localhost:8080/flapjack/metrics](http://localhost:8080/flapjack/metrics)
