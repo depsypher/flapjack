@@ -72,7 +72,6 @@ public class CambridgeTemplateProvider implements ViewProcessor<String> {
 		out.flush();
 
 		String templ = TEMPLATE_DIR + t;
-		System.out.println("template=" + templ);
 		TemplateFactory fact = null;
 		if (isProd()) {
 			fact = factories.get(templ);

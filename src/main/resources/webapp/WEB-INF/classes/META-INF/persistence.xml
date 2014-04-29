@@ -5,20 +5,25 @@
 		version="2.0">
 
 	<persistence-unit name="flapjackPU" transaction-type="RESOURCE_LOCAL">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>flapjack.entity.Person</class>
 		<class>flapjack.entity.Session</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
-			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-			<property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/flapjack" />
-			<property name="hibernate.connection.username" value="flapjack" />
-			<property name="hibernate.connection.password" value="flapjack" />
+			<property name="hibernate.connection.provider_class" value="com.zaxxer.hikari.hibernate.HikariConnectionProvider" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 			<property name="hibernate.cache.use_second_level_cache" value="true" />
 			<property name="hibernate.cache.use_query_cache" value="true" />
 			<property name="hibernate.cache.region_prefix" value="flapjack" />
 			<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
+
+			<property name="hibernate.hikari.maximumPoolSize" value="4" />
+			<property name="hibernate.hikari.idleTimeout" value="30000" />
+			<property name="hibernate.hikari.connectionTimeout" value="30000" />
+			<property name="hibernate.hikari.dataSourceClassName" value="org.postgresql.ds.PGSimpleDataSource" />
+			<property name="hibernate.hikari.dataSource.url" value="jdbc:postgresql://localhost:5432/flapjack" />
+			<property name="hibernate.hikari.dataSource.user" value="flapjack" />
+			<property name="hibernate.hikari.dataSource.password" value="flapjack" />
 
 			<!-- Default is false for backwards compatibility. Should be used on all new projects -->
 			<property name="hibernate.id.new_generator_mappings" value="true" />
