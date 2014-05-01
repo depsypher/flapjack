@@ -3,15 +3,26 @@ package flapjack.conf;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
+import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.jersey.server.ContainerException;
+import org.glassfish.jersey.server.mvc.Viewable;
 import org.joda.time.DateTime;
+import org.jvnet.hk2.annotations.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cambridge.ClassPathTemplateLoader;
 import cambridge.Expressions;
@@ -20,10 +31,8 @@ import cambridge.TemplateFactory;
 import cambridge.TemplateLoader;
 import cambridge.jexl.JexlExpressionLanguage;
 
-import com.google.inject.Inject;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provider;
-import com.sun.jersey.api.view.Viewable;
-import com.sun.jersey.spi.template.ViewProcessor;
 
 import flapjack.entity.Person;
 import flapjack.entity.Session;
@@ -31,16 +40,18 @@ import flapjack.exception.SessionTimeoutException;
 import flapjack.manager.PersonManager;
 import flapjack.utils.AppUtils;
 
+import org.glassfish.jersey.server.mvc.spi.AbstractTemplateProcessor;
+
 /**
- * A Jersey View Processor for integrating with Cambridge Templates
+ * A Jersey 2.x Template Processor for integrating with Cambridge Templates
  *
  * @author Ray Vanderborght
  */
 @javax.ws.rs.ext.Provider
-public class CambridgeTemplateProvider implements ViewProcessor<String> {
+public class CambridgeTemplateProvider extends AbstractTemplateProcessor<Template> {
 
-	private static final String UTF_8 = "UTF-8";
-	private static final String TEMPLATE_DIR = "static/templates";
+	@SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(CambridgeTemplateProvider.class);
 
 	/** Produces TemplateFactories */
 	private TemplateLoader loader;
@@ -54,43 +65,62 @@ public class CambridgeTemplateProvider implements ViewProcessor<String> {
 	@Inject
 	private Provider<HttpServletRequest> requestProvider;
 
+	/**
+	 * Create an instance of this processor with injected {@link javax.ws.rs.core.Configuration config} and
+	 * (optional) {@link javax.servlet.ServletContext servlet context}.
+	 *
+	 * @param config config to configure this processor from.
+	 * @param serviceLocator service locator to initialize template object factory if needed.
+	 * @param servletContext (optional) servlet context to obtain template resources from.
+	 */
 	@Inject
-	public CambridgeTemplateProvider(ServletContext context) throws Exception {
-		setExpressionLanguage();
+	public CambridgeTemplateProvider(final javax.ws.rs.core.Configuration config,
+			final ServiceLocator serviceLocator, @Optional final ServletContext servletContext) {
 
+		super(config, servletContext, "cambridge", "html");
+		setExpressionLanguage();
 		this.loader = new ClassPathTemplateLoader(getClass().getClassLoader());
 	}
 
 	@Override
-	public String resolve(String path) {
-		return path;
-	}
-
-	@Override
-	public void writeTo(String t, Viewable viewable, OutputStream out) throws IOException {
-		// commit the status and headers to the HttpServletResponse
-		out.flush();
-
-		String templ = TEMPLATE_DIR + t;
+	protected Template resolve(final String templateReference, final Reader reader) throws Exception {
 		TemplateFactory fact = null;
 		if (isProd()) {
-			fact = factories.get(templ);
+			fact = factories.get(templateReference);
 			if (fact == null) {
-				fact = loader.newTemplateFactory(templ);
-				factories.put(templ, fact);
+				fact = loader.newTemplateFactory(templateReference);
+				factories.put(templateReference, fact);
 			}
 		} else {
-			fact = loader.newTemplateFactory(templ);
+			fact = loader.newTemplateFactory(templateReference);
 		}
 
 		Template template = fact.createTemplate();
-		template.setProperty("it", viewable.getModel());
-
 		setCustomTemplateProperties(template);
 
-		Writer w = new OutputStreamWriter(out, UTF_8);
-		template.printTo(w);
-		w.flush();
+		return template;
+	}
+
+	@Override
+	public void writeTo(final Template template, final Viewable viewable, final MediaType mediaType,
+						final MultivaluedMap<String, Object> httpHeaders, final OutputStream out) throws IOException {
+		try {
+			Object model = viewable.getModel();
+			if (!(model instanceof Map)) {
+				model = ImmutableMap.of("model", viewable.getModel());
+			}
+
+			Charset encoding = setContentType(mediaType, httpHeaders);
+			Writer w = new OutputStreamWriter(out, encoding);
+
+			template.setProperty("it", model);
+			template.printTo(w);
+
+			w.flush();
+
+		} catch (Exception e) {
+			throw new ContainerException(e);
+		}
 	}
 
 	/**
@@ -98,8 +128,8 @@ public class CambridgeTemplateProvider implements ViewProcessor<String> {
 	 */
 	protected void setExpressionLanguage() {
 		JexlExpressionLanguage jexl = new JexlExpressionLanguage();
-		//jexl.getEngine().setSilent(false);
-		//jexl.getEngine().setLenient(false);
+//		jexl.getEngine().setSilent(false);
+//		jexl.getEngine().setLenient(false);
 		Expressions.setDefaultExpressionLanguage("jexl", jexl);
 
 		// Add a custom 'tool' binding with our TemplateTool class

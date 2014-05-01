@@ -3,6 +3,7 @@ package flapjack.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -13,8 +14,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
-import com.sun.jersey.api.view.Viewable;
+
+import org.glassfish.jersey.server.mvc.Viewable;
+
 import com.yammer.metrics.annotation.Timed;
 
 import flapjack.entity.Person;

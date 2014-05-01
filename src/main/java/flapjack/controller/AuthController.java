@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
 
 import flapjack.entity.Person;
 import flapjack.entity.Session;

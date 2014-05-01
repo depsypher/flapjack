@@ -1,7 +1,7 @@
 package flapjack.conf;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContextEvent;
@@ -16,13 +16,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.Singleton;
 import com.google.inject.persist.PersistService;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
-import com.sun.jersey.guice.JerseyServletModule;
-import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
-import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.yammer.metrics.HealthChecks;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Clock;
@@ -51,14 +50,25 @@ public class GuiceConfig extends GuiceServletContextListener {
 
 	private static final Logger log = LoggerFactory.getLogger(GuiceConfig.class);
 
+	private static Injector injector;
+	private static List<Module> modules = new ArrayList<>();
+
 	/**
 	 * Logs the time required to initialize Guice
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		log.info("Creating Guice injector...");
 		Stopwatch stopwatch = new Stopwatch();
 
 		stopwatch.start();
+		modules.add(new AppModule());
+		modules.add(new JpaPersistModule("flapjackPU"));
+		modules.add(new InstrumentationModule());
+		modules.add(new MetricsModule());
+
+		injector = Guice.createInjector(modules);
+
 		super.contextInitialized(servletContextEvent);
 		stopwatch.stop();
 
@@ -67,15 +77,17 @@ public class GuiceConfig extends GuiceServletContextListener {
 
 	@Override
 	protected Injector getInjector() {
-		Injector injector = Guice.createInjector(
-				new AppServletModule(), new AppModule(),
-				new JpaPersistModule("flapjackPU"),
-				new InstrumentationModule(),
-				new MetricsModule());
-
 		injector.getInstance(ApplicationInitializer.class);
 
 		return injector;
+	}
+
+	public static Injector getInjectorInstance() {
+		return injector;
+	}
+
+	public static Module[] getAllModulesAsArray() {
+		return (Module[]) modules.toArray(new Module[modules.size()]);
 	}
 
 	public static class ApplicationInitializer {
@@ -85,21 +97,10 @@ public class GuiceConfig extends GuiceServletContextListener {
 		}
 	}
 
-	static class AppServletModule extends JerseyServletModule {
-		@Override
-		protected void configureServlets() {
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("com.sun.jersey.config.property.packages", "flapjack.conf");
-			params.put(ServletContainer.FEATURE_FILTER_FORWARD_ON_404, "true");
-
-			filter("/*").through(GuiceContainer.class, params);
-		}
-	}
-
 	static class AppModule extends AbstractModule {
 		@Override
 		protected void configure() {
-			bind(PersonManager.class).to(PersonManagerJpa.class);
+			bind(PersonManager.class).to(PersonManagerJpa.class).in(Singleton.class);
 			bind(AccountController.class);
 			bind(AuthController.class);
 			bind(HomeController.class);
