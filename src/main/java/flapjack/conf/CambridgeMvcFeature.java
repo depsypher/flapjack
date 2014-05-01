@@ -11,7 +11,7 @@ import org.glassfish.jersey.server.mvc.MvcFeature;
 /**
  * Configuration for the Cambridge template processor
  *
- * @see CambridgeTemplateProvider
+ * @see CambridgeTemplateProcessor
  * @author ray
  */
 @ConstrainedTo(RuntimeType.SERVER)
@@ -28,8 +28,8 @@ public class CambridgeMvcFeature implements Feature {
 	public boolean configure(final FeatureContext context) {
 		final Configuration config = context.getConfiguration();
 
-		if (!config.isRegistered(CambridgeTemplateProvider.class)) {
-			context.register(CambridgeTemplateProvider.class);
+		if (!config.isRegistered(CambridgeTemplateProcessor.class)) {
+			context.register(CambridgeTemplateProcessor.class);
 
 			if (!config.isRegistered(MvcFeature.class)) {
 				context.register(MvcFeature.class);

@@ -48,10 +48,10 @@ import org.glassfish.jersey.server.mvc.spi.AbstractTemplateProcessor;
  * @author Ray Vanderborght
  */
 @javax.ws.rs.ext.Provider
-public class CambridgeTemplateProvider extends AbstractTemplateProcessor<Template> {
+public class CambridgeTemplateProcessor extends AbstractTemplateProcessor<Template> {
 
 	@SuppressWarnings("unused")
-	private static final Logger log = LoggerFactory.getLogger(CambridgeTemplateProvider.class);
+	private static final Logger log = LoggerFactory.getLogger(CambridgeTemplateProcessor.class);
 
 	/** Produces TemplateFactories */
 	private TemplateLoader loader;
@@ -74,7 +74,7 @@ public class CambridgeTemplateProvider extends AbstractTemplateProcessor<Templat
 	 * @param servletContext (optional) servlet context to obtain template resources from.
 	 */
 	@Inject
-	public CambridgeTemplateProvider(final javax.ws.rs.core.Configuration config,
+	public CambridgeTemplateProcessor(final javax.ws.rs.core.Configuration config,
 			final ServiceLocator serviceLocator, @Optional final ServletContext servletContext) {
 
 		super(config, servletContext, "cambridge", "html");
