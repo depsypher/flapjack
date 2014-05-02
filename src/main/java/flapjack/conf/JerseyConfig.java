@@ -30,7 +30,7 @@ public class JerseyConfig extends ResourceConfig {
 	public JerseyConfig(ServiceLocator serviceLocator) {
 		log.info("Registering jersey injectables...");
 
-		property(MvcFeature.TEMPLATE_BASE_PATH, "static/templates/");
+		property(MvcFeature.TEMPLATE_BASE_PATH, "META-INF/resources/templates/");
 
 		registerProviders();
 		createBiDirectionalGuiceBridge(serviceLocator, GuiceConfig.getAllModulesAsArray());
