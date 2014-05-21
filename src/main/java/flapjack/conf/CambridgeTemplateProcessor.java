@@ -19,13 +19,14 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.jersey.server.ContainerException;
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.glassfish.jersey.server.mvc.spi.AbstractTemplateProcessor;
 import org.joda.time.DateTime;
 import org.jvnet.hk2.annotations.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cambridge.ClassPathTemplateLoader;
-import cambridge.Expressions;
+import cambridge.ExpressionLanguage;
 import cambridge.Template;
 import cambridge.TemplateFactory;
 import cambridge.TemplateLoader;
@@ -39,8 +40,6 @@ import flapjack.entity.Session;
 import flapjack.exception.SessionTimeoutException;
 import flapjack.manager.PersonManager;
 import flapjack.utils.AppUtils;
-
-import org.glassfish.jersey.server.mvc.spi.AbstractTemplateProcessor;
 
 /**
  * A Jersey 2.x Template Processor for integrating with Cambridge Templates
@@ -78,7 +77,6 @@ public class CambridgeTemplateProcessor extends AbstractTemplateProcessor<Templa
 			final ServiceLocator serviceLocator, @Optional final ServletContext servletContext) {
 
 		super(config, servletContext, "cambridge", "html");
-		setExpressionLanguage();
 		this.loader = new ClassPathTemplateLoader(getClass().getClassLoader());
 	}
 
@@ -88,11 +86,11 @@ public class CambridgeTemplateProcessor extends AbstractTemplateProcessor<Templa
 		if (isProd()) {
 			fact = factories.get(templateReference);
 			if (fact == null) {
-				fact = loader.newTemplateFactory(templateReference);
+				fact = loader.newTemplateFactory(templateReference, getExpressionLanguage());
 				factories.put(templateReference, fact);
 			}
 		} else {
-			fact = loader.newTemplateFactory(templateReference);
+			fact = loader.newTemplateFactory(templateReference, getExpressionLanguage());
 		}
 
 		Template template = fact.createTemplate();
@@ -126,17 +124,18 @@ public class CambridgeTemplateProcessor extends AbstractTemplateProcessor<Templa
 	/**
 	 * Configure the expression language to use in the templates
 	 */
-	protected void setExpressionLanguage() {
+	protected ExpressionLanguage getExpressionLanguage() {
 		JexlExpressionLanguage jexl = new JexlExpressionLanguage();
 //		jexl.getEngine().setSilent(false);
 //		jexl.getEngine().setLenient(false);
-		Expressions.setDefaultExpressionLanguage("jexl", jexl);
 
 		// Add a custom 'tool' binding with our TemplateTool class
 		// http://commons.apache.org/proper/commons-jexl/apidocs/org/apache/commons/jexl2/package-summary.html#configuration
 		Map<String, Object> funcs = new HashMap<String, Object>();
 		funcs.put("utils", AppUtils.class);
 		jexl.getEngine().setFunctions(funcs);
+
+		return jexl;
 	}
 
 	/**

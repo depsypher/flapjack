@@ -152,23 +152,23 @@
 		<dependency>
 			<groupId>com.googlecode.cambridge</groupId>
 			<artifactId>cambridge-components</artifactId>
-			<version>1.0</version>
+			<version>0.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.cambridge</groupId>
 			<artifactId>cambridge-core</artifactId>
-			<version>1.0</version>
+			<version>0.9-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.cambridge</groupId>
 			<artifactId>cambridge-jaxrs</artifactId>
-			<version>1.0</version>
+			<version>0.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.cambridge</groupId>
 			<artifactId>cambridge-jexl</artifactId>
-			<version>1.0</version>
+			<version>0.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.yammer.metrics</groupId>
