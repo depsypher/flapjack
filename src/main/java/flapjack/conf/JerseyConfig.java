@@ -1,8 +1,12 @@
 package flapjack.conf;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+import org.aopalliance.intercept.MethodInterceptor;
+import org.glassfish.hk2.api.InterceptionService;
 import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.mvc.MvcFeature;
 import org.jvnet.hk2.guice.bridge.api.GuiceBridge;
@@ -16,6 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+
+import flapjack.auth.AuthInterceptor;
+import flapjack.auth.AuthService;
 
 /**
  * Configuration for Jersey 2.x
@@ -42,6 +49,14 @@ public class JerseyConfig extends ResourceConfig {
 		JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
 		provider.setMapper(mapper);
 		register(provider);
+
+		register(new AbstractBinder() {
+			@Override
+			protected void configure() {
+				bind(AuthInterceptor.class).to(MethodInterceptor.class).in(Singleton.class);
+				bind(AuthService.class).to(InterceptionService.class).in(Singleton.class);
+			}
+		});
 	}
 
 	public Injector createBiDirectionalGuiceBridge(ServiceLocator serviceLocator, Module... applicationModules) {

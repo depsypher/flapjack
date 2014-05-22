@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -40,11 +41,12 @@ public class Session implements Serializable {
 	 * to sign in at once, so we use a special database sequence that allocates
 	 * multiple ids at the same time to reduce contention.
 	 */
-	@Id @GeneratedValue(generator=SEQUENCE_NAME)
-	@SequenceGenerator(name=SEQUENCE_NAME, sequenceName=SEQUENCE_NAME, allocationSize=50)
+	@Id @GeneratedValue(generator=SEQUENCE_NAME) @Column(name="session_id")
+	@SequenceGenerator(name=SEQUENCE_NAME, sequenceName=SEQUENCE_NAME, allocationSize=10)
 	private Long id;
 
 	@ManyToOne
+	@JoinColumn(name="person_id")
 	private Person person;
 
 	@Column(nullable=false, length=255)

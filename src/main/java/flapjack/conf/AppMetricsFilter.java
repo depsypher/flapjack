@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 
+import flapjack.auth.Role;
 import flapjack.entity.Person;
 import flapjack.entity.Session;
 import flapjack.manager.PersonManager;
@@ -41,7 +42,7 @@ public class AppMetricsFilter extends DefaultWebappMetricsFilter {
 			}
 		} else {
 			Person person = session.getPerson();
-			if (person == null || !person.isAdmin()) {
+			if (person == null || person.getRole() != Role.ADMIN) {
 				throw new ServletException("Not allowed");
 			}
 		}

@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 
+import flapjack.auth.Role;
 import flapjack.entity.Person;
 import flapjack.entity.Session;
 import flapjack.manager.PersonManager;
@@ -81,6 +82,7 @@ public class AuthController {
 					Person user = personManager.findByEmail(email);
 					if (user == null) {
 						user = new Person(email);
+						user.setRole(Role.USER);
 						personManager.save(user);
 					}
 

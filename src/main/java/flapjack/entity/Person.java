@@ -4,12 +4,16 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 import com.google.common.base.Objects;
+
+import flapjack.auth.Role;
 
 /**
  * Represents a happy user of our wonderful system
@@ -28,6 +32,7 @@ public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue
+	@Column(name="person_id")
 	private Long id;
 
 	@Column
@@ -37,36 +42,14 @@ public class Person implements Serializable {
 	private String email;
 
 	@Column(nullable=false)
-	private boolean admin;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 
 	public Person() {
 	}
 
 	public Person(String email) {
 		this.email = email;
-	}
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public boolean isAdmin() {
-		return admin;
-	}
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
 	}
 
 	@Override
@@ -91,7 +74,29 @@ public class Person implements Serializable {
 		return Objects.toStringHelper(this)
 				.add("email", email)
 				.add("name", name)
-				.add("admin", admin)
+				.add("role", role)
 				.toString();
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
 	}
 }
